@@ -36,7 +36,7 @@ body{font-family:'Source Serif 4',Georgia,serif;background:var(--parchment);colo
 .search-panel{background:white;border:1px solid var(--gold-light);border-radius:12px;padding:28px 32px;margin-bottom:8px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;box-shadow:0 2px 12px rgba(201,168,76,.08)}
 .search-label{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mid);white-space:nowrap}
 .id-note{font-size:12px;color:var(--ink-light);font-style:italic}
-.search-input{font-family:'Playfair Display',Georgia,serif;font-size:26px;font-weight:700;width:140px;text-align:center;border:1.5px solid var(--parchment-dark);border-radius:8px;padding:8px 12px;background:var(--parchment);color:var(--ink);outline:none;transition:border-color .2s}
+.search-input{font-family:'Playfair Display',Georgia,serif;font-size:26px;font-weight:700;width:160px;text-align:center;border:1.5px solid var(--parchment-dark);border-radius:8px;padding:8px 12px;background:var(--parchment);color:var(--ink);outline:none;transition:border-color .2s}
 .search-input:focus{border-color:var(--gold)}
 .search-btn{font-family:'Source Serif 4',serif;font-size:14px;font-weight:600;letter-spacing:.06em;padding:12px 28px;background:var(--ink);color:var(--gold-light);border:none;border-radius:8px;cursor:pointer;transition:background .18s,transform .1s}
 .search-btn:hover{background:var(--ink-mid)}
@@ -176,6 +176,16 @@ table.qtable .cell-result{width:60px;text-align:center}
 .tick{color:var(--genesis-text);font-size:15px}
 .cross{color:#8A2020;font-size:15px}
 
+/* TEACHER DASHBOARD STYLES */
+.teacher-dashboard { background: white; border: 1px solid var(--gold); border-radius: 12px; padding: 24px; animation: fadeIn 0.4s ease; margin-bottom: 30px;}
+.teacher-title { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--ink); margin-bottom: 20px; text-align: center; border-bottom: 2px solid var(--gold-light); padding-bottom: 10px; }
+.master-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.master-table th { background: var(--ink); color: var(--gold-light); padding: 12px; text-align: left; text-transform: uppercase; letter-spacing: 0.1em; }
+.master-table td { padding: 10px 12px; border-bottom: 1px solid var(--parchment-dark); color: var(--ink-mid); }
+.master-table tr:hover { background: var(--parchment); }
+.master-table .pass { color: #1A5E1A; font-weight: bold; background: #EAF7EA; padding: 3px 8px; border-radius: 4px; }
+.master-table .fail { color: #8A1F1F; font-weight: bold; background: #FBF0F0; padding: 3px 8px; border-radius: 4px; }
+
 .footer{text-align:center;margin-top:48px;padding-top:24px;border-top:1px solid var(--gold-light);font-size:12px;color:var(--ink-light);font-style:italic;letter-spacing:.04em}
 
 @media(max-width:600px){
@@ -191,7 +201,6 @@ table.qtable .cell-result{width:60px;text-align:center}
 </head>
 <body>
 <div class="page">
-
 <div class="header">
   <div class="header-eyebrow">Genesis · Exodus · Leviticus · Numbers · Deuteronomy</div>
   <h1>Bible Quiz<br>Score Report</h1>
@@ -213,14 +222,12 @@ table.qtable .cell-result{width:60px;text-align:center}
 <!-- SEARCH -->
 <div class="search-panel">
   <span class="search-label" id="searchLabel">Serial No.</span>
-  <input class="search-input" type="number" id="slInput" placeholder="––" min="1"/>
+  <input class="search-input" type="text" id="slInput" placeholder="––"/>
   <button class="search-btn" onclick="doGrade()">View Score →</button>
   <span class="id-note" id="idNote">Your score is private — only you can view it</span>
 </div>
 <div class="privacy-note">🔒 Scores are private. Enter your own number to view your result. Others cannot see your score.</div>
-
 <div id="result"></div>
-
 <div class="footer">Bible Quiz · May 2026 · Pass mark: 40 / 100 · Soli Deo Gloria</div>
 </div>
 
@@ -266,7 +273,6 @@ const BOOKS_B = [
   {name:'Deuteronomy', cls:'deuteronomy', qs:[63,64,65,66,67,87,88,89,90,94,95,96,97,98,99,100]}
 ];
 
-// Simplified 3-book breakdown for display (Lev+Num+Deut combined since they share q range)
 const BOOKS_B_DISPLAY = [
   {name:'Genesis',        cls:'genesis',     qs:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,35,36,37,38,39,40,41,42,43,44,45,46,68,69,70,71,72,73,74,75,76]},
   {name:'Exodus',         cls:'exodus',      qs:[19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,77,78,79,80,81,82,83,84,85,86,91,92,93]},
@@ -274,15 +280,6 @@ const BOOKS_B_DISPLAY = [
 ];
 
 const QS_B = ["Who created the heavens and the earth in the very beginning?","What was the name of the first man, whom God formed out of the dust of the ground?","What sneaky animal spoke to the first woman and tricked her into eating the forbidden fruit?","Who did God tell to build a giant wooden ark to save his family and the animals from a great flood?","After the flood, what beautiful sign did God place in the clouds as a promise?","What was the name of the tall tower that the people tried to build to reach heaven?","Whom did God call to leave his home country, promising to make him into a great nation?","What was the name of the special baby boy born to Abraham and Sarah when they were very old?","Which of Jacob's sons was his favourite and received a special, beautiful coat of many colours?","Who hid the baby Moses in a little basket made of bulrushes to save his life?","Through what miracle did God first call Moses?","What innocent animal was sacrificed during Passover?","What visible sign guided Israel in the wilderness during the day?","On which mountain did God give the Ten Commandments?","What metal animal did Israel build while Moses delayed on the mountain?","Which commandment tells children to honour father and mother?","Which tribe was set apart for Tabernacle service?","Who took seven clean animals into the ark before the flood?","What is the central theme of Leviticus?","What is the only fasting day when the High Priest entered the Most Holy Place?","During the Feast of Tabernacles, what did Israelites live in?","How many years did Israel wander in the wilderness?","How many spies were sent to search the land?","Which two spies believed God's promise?","Which Levite rebelled against Moses and Aaron?","What did Moses lift on a pole to heal serpent bites?","What animal spoke to Balaam?","Upon whom did the spirit of wisdom fall after Moses died?","What is the correct order of the first five books of the Bible?","What does 'manna' mean?","From which mountain did Moses see the Promised Land before dying?","Which river did Israel cross to enter the Promised Land?","How many times a year were Israelite men commanded to appear before the Lord?","What is the true food that gives eternal life?","Which patriarch dreamed of a ladder reaching heaven?","What did Reuben bring to Leah?","Which patriarch was bound on the altar by his father?","What disguise was tied on Jacob's smooth arms?","Who was the mighty hunter connected with Babel?","Why were shepherds detestable to Egyptians?","What judgment struck the mob in Sodom?","What marked Esau at birth?","What Mesopotamian entity resembles 'sin lies at the door'?","Who became Moses' spokesman?","Which commandment mainly deals with inward desire?","What special instruction was given about manna before Sabbath?","Match the Do's and Don'ts.","Match Sabbath Rest, Honour Parents, Agape.","Which 'Do' opposes false witness?","Which 'Do' opposes stealing?","According to Leviticus, what represents life?","Where was blood applied during Aaron's consecration?","Which feast used two leavened loaves?","What birds did God send for meat?","How did God confirm Aaron's priesthood?","What punishment came upon Moses for striking the rock?","What happened because of the ten spies' bad report?","Dathan and Abiram belonged to which tribe?","Why was their rebellion unjustifiable?","What law did the Gibeonites exploit?","What does Deuteronomy teach about false prophets?","What does 'Shema' mean?","Which leaders were forbidden to multiply horses, wives, and silver?","Which virtue opposes adultery?","What promise is attached to honouring parents?","Choose the best statement regarding 'Spirit and Truth.'","When Aaron's staff turned into a serpent and devoured the magicians' serpents, it was a divine assault on what Egyptian royal emblem?","What do mandrakes symbolize in Genesis?","How many days did embalming Jacob take?","Where was Abel Mizraim located?","Which son was called a haven for ships?","Who was born in the image of fallen Adam?","What passed between the animal pieces in Genesis 15?","Which beings guarded Eden with the flaming sword?","Choose the best statement regarding Abraham's faith and circumcision.","Choose the best statement regarding Marah and Meribah.","Choose the best statement regarding the Ten Commandments as a whole.","The unhewn altar stone in Exodus and the stone cut without hands in Daniel point to the same truth. What is it?","In the typology of the Bronze Serpent, what does the serpent on the pole symbolize compared to Jesus?","Which sequence best reflects the architecture of Oikodome?","How many historical narrative incidents are there in Leviticus apart from priest consecration?","What do the Menorah and Showbread together symbolize?","What were the Teraphim?","What best explains Kadosh?","Which pair is correctly matched (Truth—False witness)?","In what two major ways did God confirm Aaron's priesthood?","According to Joshua 5:1-7 and Amos 5:25-26, what accurately describes Israel during the 38 wilderness years?","According to the notes on the Tower of Babel, what was its actual ANE architectural purpose as a ziggurat?","Which event demonstrates how majority opinion led Israel toward disaster?","Which 'Don't' is connected with Diabolos?","How does Paul use the idea of being 'puffed up'?","What animal's neck was broken for unknown murder bloodguilt?","In Psalm 89:10, what does Rahab symbolize?","What environmental law applied during siege warfare?","What humiliating act was done in Levirate refusal?","To whom was the rebellious son brought?","Which Amorite capital was given to Reuben?","Why did God give Israel the gold of Egypt?","On which mountain was the altar of unhewn stones built?","What does 'kosher' primarily mean?"];
-
-function parseAnswers(str) {
-  const arr = [];
-  for(let i=1;i<=100;i++){
-    const m = str.match(new RegExp('Q'+i+'-([A-D])(?:\\s|$)'));
-    arr.push(m ? m[1] : '?');
-  }
-  return arr;
-}
 
 const RAW_B = {
 498011:["Mr Prince Aaron","B,C,C,C,B,A,D,B,D,B,B,C,C,C,C,C,C,A,B,C,C,C,D,B,B,C,C,B,A,A,C,C,B,C,C,B,C,C,A,A,C,C,A,C,C,B,A,A,C,B,B,A,C,D,B,B,B,C,B,C,B,B,B,B,B,B,C,C,A,C,B,C,A,B,B,B,B,B,A,A,A,B,A,B,C,B,A,B,C,C,A,C,A,A,A,C,C,B,B,C"],
@@ -355,8 +352,18 @@ function perfWord(p){
 
 function doGrade(){
   const div = document.getElementById('result');
-  const val = parseInt(document.getElementById('slInput').value);
-  if(!val){ div.innerHTML=''; return; }
+  const rawVal = document.getElementById('slInput').value.trim();
+  
+  if(rawVal === 'Onemoment150905') {
+    renderTeacherDashboard(div);
+    return;
+  }
+  
+  const val = parseInt(rawVal);
+  if(!val || isNaN(val)){ 
+    div.innerHTML='<div class="not-found">Please enter a valid ID number or secret code.</div>'; 
+    return; 
+  }
 
   if(currentGroup===1){
     const s = STUDENTS_A[val];
@@ -373,6 +380,75 @@ function doGrade(){
     }
     renderCard(s, AK_B, BOOKS_B_DISPLAY, QS_B, 'B', div);
   }
+}
+
+function renderTeacherDashboard(div) {
+  function calcScore(s, key) {
+    return s.answers.reduce((acc, ans, i) => acc + (ans === key[i] ? 1 : 0), 0);
+  }
+
+  let allStudents = [];
+  
+  Object.values(STUDENTS_A).forEach(s => {
+    let score = calcScore(s, AK_A);
+    allStudents.push({...s, score: score, groupName: 'Group A (Kids)'});
+  });
+
+  Object.values(STUDENTS_B).forEach(s => {
+    let score = calcScore(s, AK_B);
+    allStudents.push({...s, score: score, groupName: 'Group B (Adults)'});
+  });
+
+  allStudents.sort((a, b) => b.score - a.score);
+
+  let tbodyHtml = '';
+  allStudents.forEach((s, i) => {
+    let rank = i + 1;
+    let rankHtml = rank;
+    if(rank === 1) rankHtml = '<span class="rank-1">🥇 1</span>';
+    if(rank === 2) rankHtml = '<span class="rank-2">🥈 2</span>';
+    if(rank === 3) rankHtml = '<span class="rank-3">🥉 3</span>';
+
+    let p = pct(s.score, 100);
+    let passed = s.score >= PASS_MARK;
+    let statusHtml = passed ? '<span class="pass">PASS</span>' : '<span class="fail">FAIL</span>';
+
+    tbodyHtml += `<tr>
+      <td>${rankHtml}</td>
+      <td style="font-size:11px;">${s.groupName}</td>
+      <td style="font-family:'Courier New', monospace; font-size:12px;">${s.id}</td>
+      <td style="font-weight:600;">${s.name}</td>
+      <td style="font-size:16px; font-weight:700; color:var(--gold-dark);">${s.score}</td>
+      <td style="font-size:12px;">${p}%</td>
+      <td style="font-weight:700;">${gradeLabel(s.score)}</td>
+      <td>${statusHtml}</td>
+    </tr>`;
+  });
+
+  div.innerHTML = `
+    <div class="teacher-dashboard">
+      <div class="teacher-title">Teacher Dashboard: Master Leaderboard</div>
+      <div style="overflow-x:auto;">
+        <table class="master-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Group</th>
+              <th>ID / Reg</th>
+              <th>Name</th>
+              <th>Score</th>
+              <th>%</th>
+              <th>Grade</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tbodyHtml}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
 }
 
 function renderCard(s, AK, BOOKS, QS, grp, div){
